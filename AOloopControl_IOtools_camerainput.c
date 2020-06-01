@@ -550,7 +550,7 @@ static void *compute_function_dark_subtract( void *ptr )
  *
  */
 
-int_fast8_t __attribute__((hot)) Read_cam_frame(
+int __attribute__((hot)) Read_cam_frame(
     long loop,
     int RM,
     int normalize,
@@ -617,6 +617,8 @@ int_fast8_t __attribute__((hot)) Read_cam_frame(
 
     static long long WFScnt = 0;
     static long long WFScntRM = 0;
+
+	int NBmissedframe = 0;
 
 
     AOLOOPCONTROL_IOTOOLS_CAMERAINPUT_LOGEXEC;
@@ -775,6 +777,7 @@ int_fast8_t __attribute__((hot)) Read_cam_frame(
 			}
             fflush(stdout);
         }
+        NBmissedframe = semval;
         
         
 		//sprintf(pmsg, "sem %d = %d [%d]", semindex, semval, FORCE_REG_TIMING);
@@ -1356,7 +1359,7 @@ int_fast8_t __attribute__((hot)) Read_cam_frame(
             }
     */
 
-    return(0);
+    return NBmissedframe;
 }
 
 
